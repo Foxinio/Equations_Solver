@@ -40,6 +40,17 @@ namespace Interpreter_Równań {
                         defaultMessage, message)) {
             }
         }
+        [Serializable]
+        public class WrongSolverChoosenException: Exception {
+            static string[] defaultMessage = new string[] { "Wrong method of solving choosen, ", " cannot do anything with your expression." };
+            static string[] typeNames = new string[] { "Symplification" };
+            public enum types { Simplyfication };
+            public WrongSolverChoosenException(
+                types typeInUse) :
+                    base(String.Format("{0}{1}{2}",
+                        defaultMessage[0], typeNames[(int)typeInUse], defaultMessage[1])) {
+            }
+        }
 
         private enum Type {
             BracketsOpen,
@@ -50,11 +61,12 @@ namespace Interpreter_Równań {
             Equality,
             Factorial,
             Comma,
+            Negative,
             Null
         }
-        private static char[] operators = { '+', '-', '*', '/', '^' };
+        private static char[] operators = { '+',/* '-',*/ '*', '/', '^' };
         public delegate void ChangeHandler(string input);
-        private static string[] Split(string input) {
+        private static string[] Split(string input) {// implement Type.Negative - make it that subtruction is turn into addition of negative number
             List<string> result = new List<string>();
 
             string currentString = string.Empty;
@@ -75,6 +87,9 @@ namespace Interpreter_Równań {
                 }
                 else if (item == ')') {
                     currentType = Type.BracketsClose;
+                }
+                else if(item == '-') {
+                    currentType = Type.Negative;
                 }
                 else if (item >= '0' && item <= '9' || item == '.') {
                     currentType = Type.Number;
@@ -101,30 +116,40 @@ namespace Interpreter_Równań {
                     continue;
                 }
                 else {
-                    throw new FormatException();
+                    throw new InvalidEquationException();
                 }
 
 
 
                 if (previousType == Type.Null) {//                                          Null
                     currentString = string.Empty + item;
-                    if (currentType == Type.Factorial || currentType == Type.Comma) {
+                    if (currentType == Type.BracketsClose) {
+                        currentString = string.Empty;
+                    }
+                    else if (new Type[] {
+                                Type.Operator,
+                                Type.Comma,
+                                Type.Equality,
+                                Type.Factorial
+                            }.Contains(currentType)) {
                         throw new InvalidEquationException();
                     }
                 }
                 else if (previousType == Type.BracketsOpen) {//                             Brackets Open
-                    if (currentType == Type.Operator || currentType == Type.Comma) {
+                    if (currentType == Type.Operator || currentType == Type.Comma || currentType == Type.Factorial) {
                         throw new InvalidEquationException();
                     }
-                    result.Add(currentString);
-                    currentString = string.Empty + item;
                     if (currentType == Type.BracketsClose) {
-                        result.Remove(result.Last());
-                        //if(beforePreviousType == Type.Null) {// dlaczego
-                        //    throw new InvalidEquationException();
-                        //}
+                        currentString = string.Empty;
                         previousType = beforePreviousType;
                         continue;
+                    }
+                    else if (currentType == Type.Equality) {
+                        currentString = string.Empty + item;
+                    }
+                    else {
+                        result.Add(currentString);
+                        currentString = string.Empty + item;
                     }
                 }
                 else if (previousType == Type.Number) {//                                   Number
@@ -135,6 +160,10 @@ namespace Interpreter_Równań {
                         result.Add(currentString);
                         if (currentType == Type.BracketsOpen || currentType == Type.Word) {
                             result.Add("*");
+                        }
+                        if (currentType == Type.Negative) {
+                            result.Add("+");
+                            currentType = Type.Number;
                         }
                         currentString = string.Empty + item;
                         isDot = false;
@@ -153,13 +182,18 @@ namespace Interpreter_Równań {
                     if (new Type[] {
                             Type.Operator,
                             Type.BracketsClose,
-                            Type.Comma
+                            Type.Comma,
+                            Type.Equality,
+                            Type.Factorial
                         }.Contains(currentType)) {
                         throw new InvalidEquationException();
                     }
                     else {
                         result.Add(currentString);
                         currentString = string.Empty + item;
+                        if (currentType == Type.Negative) {
+                            currentType = Type.Number;
+                        }
                     }
                 }
                 else if (previousType == Type.BracketsClose) {//                             Brackets Close
@@ -171,6 +205,9 @@ namespace Interpreter_Równań {
                         }.Contains(currentType)) {
                         result.Add("*");
                     }
+                    if (currentType == Type.Negative) {
+                        result.Add("+");
+                    }
                     currentString = string.Empty + item;
                 }
                 else if (previousType == Type.Factorial) {//                                 Factorial
@@ -179,23 +216,52 @@ namespace Interpreter_Równań {
                     }
                     else {
                         result.Add(currentString);
+                        if (currentType == Type.Negative) {
+                            result.Add("+");
+                        }
+                        else if (new Type[] {
+                            Type.BracketsOpen,
+                            Type.Number,
+                            Type.Word
+                        }.Contains(currentType)) {
+
+                        }
                         currentString = string.Empty + item;
                     }
                 }
                 else if (previousType == Type.Equality) {//                                  Equality
                     if (new Type[] {
                             Type.Operator,
-                            Type.BracketsClose,
-                            Type.Comma
+                            Type.Comma,
+                            Type.Factorial
                         }.Contains(currentType)) {
                         throw new InvalidEquationException();
                     }
-                    else if (currentType == Type.Equality && beforePreviousType == Type.Factorial) {
-                        result.Add("!");
-                        currentString = "=" + item;
+                    else if (currentType == Type.BracketsClose) {
+                        currentType = previousType;
+                        beforePreviousType = Type.Equality; // stupid way to indicate that this happened
+                    }
+                    else if (currentType == Type.Equality) {
+                        if (beforePreviousType == Type.Factorial) {
+                            result.Add("!");
+                            currentString = "=" + item;
+                        }
+                        else if (beforePreviousType == Type.Equality) {// catches if Equality is > 2 chars long
+                            throw new InvalidEquationException();
+                        }
+                        else {
+                            beforePreviousType = Type.Equality;
+                            currentString += item;
+                        }
                     }
                     else {
                         result.Add(currentString);
+                        if (currentType == Type.BracketsOpen) {
+                            beforePreviousType = Type.Equality;
+                        }
+                        if (currentType == Type.Negative) {
+                            currentType = Type.Number;
+                        }
                         currentString = string.Empty + item;
                     }
                 }
@@ -210,11 +276,37 @@ namespace Interpreter_Równań {
                         throw new InvalidEquationException();
                     }
                     result.Add(currentString);
+                    if (currentType == Type.Negative) {
+                        currentType = Type.Number;
+                    }
                     currentString = string.Empty + item;
+                }
+                else if (previousType == Type.Negative) {
+                    if(currentType == Type.Number) {
+                        currentString += item;
+                    }
+                    else if(currentType == Type.BracketsOpen || currentType == Type.Word) {
+                        result.Add(currentString + "1");
+                        result.Add("*");
+                        currentString = string.Empty + item;
+                    }
+                    else {
+                        throw new InvalidEquationException();
+                    }
                 }
                 previousType = currentType;
             }
-            result.Add(currentString);
+            if (new Type[] {
+                            Type.Operator,
+                            Type.Equality,
+                            Type.Comma,
+                            Type.Null
+                        }.Contains(previousType)) {
+                throw new InvalidEquationException();
+            }
+            else if(previousType != Type.BracketsOpen) {
+                result.Add(currentString);
+            }
             return result.ToArray();
         }
         public static List<Element> DecodeEquation(string input) { // TODO this needs review, Start here
@@ -229,30 +321,65 @@ namespace Interpreter_Równań {
             bool isEqualitySign = false;
             List<int> commas = new List<int>();
             commas.Add(0);
+            Element previousElement = null;
 
             string[] array = Split(input);
 
             foreach (var item in array) {
                 if (item[0] == '(') {
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Constant
+                         || previousElement.elementType == ElementType.Parameter
+                         || previousElement.elementType == ElementType.Unknown) {
+                            result.Add(new Operation(OperationType.Multiplication, additionalPriority));
+                        }
+                    }
                     var bracket = new Bracket(BracketType.Opening);
                     commas.Add(0);
                     openBrackets.Add(bracket);
                     result.Add(bracket);
                     additionalPriority++;
+                    previousElement = result.Last();
                 }
-                else if (item[0] >= '0' && item[0] <= '9') {
+                else if (item[0] >= '0' && item[0] <= '9' || item[0] == '-') {// SM - B.Close, Fact, Number, Const/P
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Constant
+                         || previousElement.elementType == ElementType.Parameter
+                         || previousElement.elementType == ElementType.Unknown) {
+                            result.Add(new Operation(OperationType.Multiplication, additionalPriority));
+                        }
+                    }
                     result.Add(new Number(double.Parse(item, CultureInfo.InvariantCulture)));
+                    previousElement = result.Last();
                 }
                 else if (item.ToLower()[0] >= 'a' && item.ToLower()[0] <= 'z') {
                     var temp = WordInterpreter.InterpretWord(item, additionalPriority);
+                    if(previousElement != null) {
+                        if((previousElement.elementType == ElementType.Number?(previousElement as Number).value < 0 : false) && 
+                            (temp.Last().elementType == ElementType.Constant || temp.Last().elementType == ElementType.Parameter || temp.Last().elementType == ElementType.Unknown)) {
+                            result.Add(new Operation(OperationType.Addition, additionalPriority));
+                        }
+                    }
                     foreach (var subitem in temp) {
                         result.Add(subitem);
                     }
+                    previousElement = result.Last();
                 }
                 else if (operators.Contains(item[0])) {
+                    if(previousElement != null) {
+                        if(previousElement.elementType == ElementType.Function) {
+                            throw new InvalidEquationException();
+                        }
+                    }
                     result.Add(new Operation((OperationType)Operation.CharToOperationType(item[0]), additionalPriority));
+                    previousElement = result.Last();
                 }
                 else if (item[0] == ')') {
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Function) {
+                            throw new InvalidEquationException();
+                        }
+                    }
                     if (openBrackets.Count == 0) {
                         if (!isEqualitySign) {
                             var bracket = new Bracket(BracketType.Opening);
@@ -283,8 +410,17 @@ namespace Interpreter_Równań {
                         result.Add(new Bracket(BracketType.Closing, bracket));
                         additionalPriority--;
                     }
+                    previousElement = result.Last();
                 }
                 else if (item[0] == '=' || item[0] == '<' || item[0] == '>') {
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Function) {
+                            throw new InvalidEquationException();
+                        }
+                    }
+                    if ((result.Last().elementType == ElementType.Operation) ? (result.Last() as Operation).operationType == OperationType.Multiplication : false) {
+                        result.RemoveAt(result.Count - 1);
+                    }
                     if (openBrackets.Count > 0) {
                         foreach (var subitem in openBrackets) {
                             result.Remove(subitem);
@@ -294,19 +430,31 @@ namespace Interpreter_Równań {
                     }
                     result.Add(new Equality((EqualityType)Equality.StringToEqualityType(item)));
                     isEqualitySign = true;
+                    previousElement = result.Last();
                 }
                 else if (item[0] == ',') {
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Function) {
+                            throw new InvalidEquationException();
+                        }
+                    }
                     if (commas.Last() == Comma.MAX_COMMAS) {
                         throw new InvalidEquationException();
                     }
                     result.Add(new Comma());
                     commas[commas.Count - 1]++;
+                    previousElement = result.Last();
                 }
                 else if (item[0] == '!') {
+                    if (previousElement != null) {
+                        if (previousElement.elementType == ElementType.Function) {
+                            throw new InvalidEquationException();
+                        }
+                    }
                     result.Add(new Operation(OperationType.Factorial, additionalPriority));
+                    previousElement = result.Last();
                 }
             }
-
             if (openBrackets.Count > 0) {
                 int count = openBrackets.Count;
                 foreach (var subitem in openBrackets) {
@@ -335,6 +483,9 @@ namespace Interpreter_Równań {
                     result.RemoveAt(0);
                     result.RemoveAt(result.Count - 1);
                 }
+            }
+            if (result.Last().elementType == ElementType.Function) {
+                throw new InvalidEquationException();
             }
             return result;
         }
@@ -370,6 +521,9 @@ namespace Interpreter_Równań {
         }
         public static Number Simplify(List<Element> argument, MessageData messageData, Function function = null) {
             var simplifyied = new List<Element>();
+            if(argument.Count(c => { return new ElementType[] { ElementType.Unknown, ElementType.Equality, ElementType.Parameter }.Contains(c.elementType); }) > 0) {
+                throw new WrongSolverChoosenException(WrongSolverChoosenException.types.Simplyfication);
+            }
             for (int i = 0; i < argument.Count; i++) {
                 if (argument[i].elementType == ElementType.Brackets) {
                     var temp = new List<Element>();
@@ -436,14 +590,6 @@ namespace Interpreter_Równań {
             }
             return simplifyied[0] as Number;
         }
-        private static string Write(List<Element> elements) {
-            string result = String.Empty;
-            foreach (var item in elements) {
-                result += item.ToString();
-                result += " ";
-            }
-            return result;
-        }
     }
 
     public class Equation {
@@ -454,23 +600,37 @@ namespace Interpreter_Równań {
         public event EquationSolver.ChangeHandler changed;
 
         public Equation(string _rawEquation = null) {
+            bool wasGiven = !(_rawEquation == null);
             rawEquation = _rawEquation;
             if (_rawEquation == null) {
                 rawEquation = Console.ReadLine();
             }
-            try {
-                deconstructed = EquationSolver.DecodeEquation(rawEquation);
-            }
-            catch (EquationSolver.InvalidEquationException e) {
+            if (rawEquation.Trim().Length == 0) {
+                Console.WriteLine("Equation cannot be empty.");
                 isProper = false;
-                Console.WriteLine("Equation is constructed poorly.");
+            }
+            else {
+                try {
+                    deconstructed = EquationSolver.DecodeEquation(rawEquation);
+                }
+                catch (EquationSolver.InvalidEquationException e) {
+                    isProper = false;
+                    Console.WriteLine("Equation is constructed poorly.");
+                }
             }
             if (isProper) {
                 changed += (string s) => { Console.WriteLine(s); };
-                changed?.Invoke(new EquationSolver.MessageData().ToString(deconstructed));
-                EquationSolver.Simplify(deconstructed, new EquationSolver.MessageData(changed));
+                if(wasGiven) changed?.Invoke(new EquationSolver.MessageData().ToString(deconstructed));
+                try {
+                    EquationSolver.Simplify(deconstructed, new EquationSolver.MessageData(changed));
+                }
+                catch (EquationSolver.WrongSolverChoosenException e) {
+                    Console.WriteLine(e.Message);
+                }
             }
-            Console.ReadKey();
+            if (wasGiven) {
+                Console.ReadKey();
+            }
         }
     }
 
@@ -587,9 +747,6 @@ namespace Interpreter_Równań {
                         input = input.Remove(0, Function.FunctionTypeToString((FunctionType)functionIndex[0].functionType).Length);
                     }
                 }
-            }
-            if (lastAddedElement == ElementType.Constant || lastAddedElement == ElementType.Parameter) {
-                result.Add(new Operation(OperationType.Multiplication, additionalPriority));
             }
             return result;
         }
