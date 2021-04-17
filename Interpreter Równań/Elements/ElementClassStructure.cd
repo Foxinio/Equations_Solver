@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Interpreter_Równań.Element">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Element.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Bracket" Collapsed="true">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAQAAAAAAAA=</HashCode>
+      <FileName>Bracket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Comma" Collapsed="true">
+    <Position X="6" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Comma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Constant" Collapsed="true">
+    <Position X="6" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAQEAAgQAAAAAAEAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Constant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Equality" Collapsed="true">
+    <Position X="6" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAAAAAAAAEAAgAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Equality.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Factorial" Collapsed="true">
+    <Position X="6" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Factorial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Function" Collapsed="true">
+    <Position X="6" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQBAAAQAAAQEAAgAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Function.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Number" Collapsed="true">
+    <Position X="6" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Number.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Operation" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAgAAQAQAAAQEAAgAAAAAAAAAAAAABAAAAAAAAAI=</HashCode>
+      <FileName>Operation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Prioritabel" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Prioritabel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter_Równań.Variable" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Variable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Interpreter_Równań.ElementType" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAEAAAEIAAAAQAAgAAAEACAAAAFA=</HashCode>
+      <FileName>Element.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interpreter_Równań.BracketType" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bracket.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interpreter_Równań.ConstantType" Collapsed="true">
+    <Position X="7.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAIAAAAAAAAAAAAAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>Constant.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interpreter_Równań.EqualityType" Collapsed="true">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAEAAAAEAAACAAAABAAAAAACA=</HashCode>
+      <FileName>Equality.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interpreter_Równań.FunctionType" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAACEAEQIAA04DQAAACARCACIohAAAAAAAgA=</HashCode>
+      <FileName>Function.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interpreter_Równań.OperationType" Collapsed="true">
+    <Position X="7.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABAAAAAQAAAAAAAAAAAAAAABAAAgABAAAAAAAAAAA=</HashCode>
+      <FileName>Operation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

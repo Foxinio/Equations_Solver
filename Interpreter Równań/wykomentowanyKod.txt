@@ -1,0 +1,173 @@
+﻿
+        /*
+        private List<Element> DecodeEquation(string input) {
+            List<Element> result = new List<Element>();
+            bool is_Proper = true;
+            string[] array = input.Split(new char[]{' '});
+
+            for (int i = 0; i < array.Length; i++) {
+                array[i] = array[i].Trim();
+            }
+
+            int additionalPriority = 0;
+            ElementType previousElement = ElementType.Operation;
+            foreach (var item in array) {
+                if(previousElement == ElementType.Equality) {
+                    is_Proper = false;
+                }
+                switch (item) {
+                case "+":
+                    result.Add(new Operation(OperationType.Addition));
+                    if(previousElement == ElementType.Operation) {
+                        is_Proper = false;
+                    }
+                    previousElement = ElementType.Operation;
+                    break;
+                case "-":
+                    result.Add(new Operation(OperationType.Subtraction));
+                    if (previousElement == ElementType.Operation) {
+                        is_Proper = false;
+                    }
+                    previousElement = ElementType.Operation;
+                    break;
+                case "/":
+                    result.Add(new Operation(OperationType.Division));
+                    if (previousElement == ElementType.Operation) {
+                        is_Proper = false;
+                    }
+                    previousElement = ElementType.Operation;
+                    break;
+                case "*":
+                    result.Add(new Operation(OperationType.Multiplication));
+                    if (previousElement == ElementType.Operation) {
+                        is_Proper = false;
+                    }
+                    previousElement = ElementType.Operation;
+                    break;
+                case "=":
+                    //result.Add(new Equality());
+                    previousElement = ElementType.Equality;
+                    break;
+                default:
+                    try {
+                        result.Add(new Number(double.Parse(item)));
+                    }
+                    catch(FormatException e) {
+                        try {
+                            result.Add(new Number(double.Parse(item, CultureInfo.InvariantCulture)));
+                        }
+                        catch (FormatException e2) {
+                            is_Proper = false;
+                        }
+                    }
+                    if (previousElement == ElementType.Number) {
+                        is_Proper = false;
+                    }
+                    previousElement = ElementType.Number;
+                    break;
+                }
+            }
+            
+            this.isProper = is_Proper;
+            return result;
+        }
+        public double? Solve() {
+            if (!isProper) {
+                return null;
+            }
+            var array = deconstructed.ToArray();
+            while (deconstructed.ToArray().Length > 1) {
+                var operationArray = (from op in array where op.elementType == ElementType.Operation select op as Operation).ToArray();
+                int maxPriority = operationArray.Max((Operation x) => { return x.priority; });
+                for (int i = 0; i < array.Length; i++) {
+                    if (array[i].elementType == ElementType.Operation) {
+                        var element = array[i] as Operation;
+                        if (element.priority == maxPriority) {
+                            var number = element.Execute((array[i - 1] as Number).value, (array[i + 1] as Number).value);
+                            deconstructed.Insert(i, number);
+                            deconstructed.Remove(array[i - 1]);
+                            deconstructed.Remove(array[i]);
+                            deconstructed.Remove(array[i + 1]);
+                            array = deconstructed.ToArray();
+                            changed();
+                        }
+                    }
+                }
+            }
+            return (array[0] as Number).value;
+        }
+        */
+
+		public Equation(string _rawEquation = null, bool debugVersion = false) // not recomended
+            {
+            bool wasGiven = _rawEquation != null;
+            rawEquation = _rawEquation;
+            if (_rawEquation == null) {
+                rawEquation = Console.ReadLine();
+            }
+            if (rawEquation.Trim().Length == 0) {
+                Console.WriteLine("Equation cannot be empty.");
+                isProper = false;
+            }
+            else {
+                try {
+                    deconstructed = EquationSolver.DecodeEquation(rawEquation);
+                }
+                catch (EquationSolver.InvalidEquationException e) {
+                    isProper = false;
+                    Console.WriteLine("Equation is constructed poorly.");
+                }
+            }
+            if (isProper) {
+                if (!debugVersion) {
+                    changed += (string s) => { Console.WriteLine(s); };
+                    if (wasGiven)
+                        changed?.Invoke(new EquationSolver.MessageData().ToString(deconstructed));
+                    try {
+                        EquationSolver.Simplify(deconstructed, new EquationSolver.MessageData(changed));
+                    }
+                    catch (EquationSolver.WrongSolverChoosenException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (Exception e) {
+                        string path = "ErrorRaport.txt";
+                        if (File.Exists(path)) {
+                            using (StreamWriter file = File.AppendText(path)) {
+                                file.WriteLine(rawEquation);
+                                file.WriteLine(e.Message);
+                                Console.WriteLine("There seems to be an error with your expression. ");
+                                Console.WriteLine("ErrorRaport.txt was created and it is advised to send this file to author fo this app. ");
+                                Console.WriteLine("For now i sugest you to try different expresion.");
+                                file.Close();
+                            }
+                        }
+                        else {
+                            using (StreamWriter file = File.CreateText(path)) {
+                                file.WriteLine(rawEquation);
+                                file.WriteLine(e.Message);
+                                Console.WriteLine("There seems to be an error with your expression. ");
+                                Console.WriteLine("ErrorRaport.txt was created and it is advised to send this file to author fo this app. ");
+                                Console.WriteLine("For now i sugest you to try different expresion.");
+                                file.Close();
+                            }
+
+                        }
+                    }
+                }
+                else {
+                    changed += (string s) => { Console.WriteLine(s); };
+                    if (wasGiven)
+                        changed?.Invoke(new EquationSolver.MessageData().ToString(deconstructed));
+                    try {
+                        EquationSolver.Simplify(deconstructed, new EquationSolver.MessageData(changed));
+                    }
+                    catch (EquationSolver.WrongSolverChoosenException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+            if (debugVersion) {
+                Console.ReadKey();
+            }
+        }
+        

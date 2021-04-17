@@ -1,7 +1,0 @@
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csprojAssemblyReference.cache
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csproj.CoreCompileInputs.cache
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe.config
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.pdb
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.exe
-C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.pdb

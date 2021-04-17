@@ -1,0 +1,28 @@
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csprojAssemblyReference.cache
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csproj.CoreCompileInputs.cache
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe.config
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.pdb
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.exe
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.pdb
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\MathNet.Numerics.dll
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\MathNet.Numerics.xml
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csproj.CopyComplete
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe.manifest
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.application
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.exe.manifest
+C:\Users\szymo\source\repos\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.application
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csprojAssemblyReference.cache
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csproj.CoreCompileInputs.cache
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.exe
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.pdb
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe.config
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe.manifest
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.application
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.exe
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\Interpreter Równań.pdb
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\MathNet.Numerics.dll
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\bin\Debug\MathNet.Numerics.xml
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.exe.manifest
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.application
+C:\Users\szymo\source\repos\NewProjects\Interpreter Równań\Interpreter Równań\obj\Debug\Interpreter Równań.csproj.CopyComplete
